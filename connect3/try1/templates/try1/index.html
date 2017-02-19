@@ -1,0 +1,10 @@
+{% if objs %}
+    <ul>
+    {% for q in objs %}
+     <li><a href="{% url 'polls:detail' question_id=q.id %}">{{q.question_text}}</a>
+     </li>
+     {%endfor%}
+     </ul>
+{%else%}
+<p>No polls to show</p>
+{%endif%}

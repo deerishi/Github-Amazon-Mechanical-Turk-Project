@@ -1,0 +1,39 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'try1/style.css' %}" />
+<div class="logoutButton">
+	<a href="/logout/" id="logout2">Logout</a>
+</div>
+<title>Marking {{comment.id}}</title>
+<h1>Comment {{comment.id}} </h1>
+<h2>User : {{user}} Numarked : {{numMarked}}</h2>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'try1:tabulateComments' comment.id %}" method="post">
+{% csrf_token %}
+<textarea rows="10" cols="150" name="comment" wrap="hard">{{comment.body}}</textarea>
+
+<div class="boxes">
+<div class ="iboxes">
+<p> Select upto max 3 IPA labels</p>
+{% for ipa in ipaList %}
+    <input type="checkbox" name="ipa" id="ipa{{ forloop.counter }}"   value="{{ forloop.counter }} " />
+    <label for="ipa{{ forloop.counter }}">{{ ipa }}</label><br />
+{% endfor %}
+</div>
+<br/><br/>
+<div class="eboxes">
+<p>Select max 3 emotions that the person might have had while writing the comment</p>
+
+{% for emotion in emotions %}
+    <input type="checkbox" name="emotion" id="emotion{{ forloop.counter }}" class ="eboxes2" value="{{ forloop.counter }}" />
+    <label for="emotion{{ forloop.counter }}">{{ emotion }}</label><br />
+{% endfor %}
+</div>
+</div>
+<input type="submit" value="Submit and Next comment" id="next"/>
+</form>
+<form action="{% url 'try1:dpc' prevComment %}"  method="get" id="form2">
+  <input type="submit" value="Previous comment" id="back"/>
+</form>
+
