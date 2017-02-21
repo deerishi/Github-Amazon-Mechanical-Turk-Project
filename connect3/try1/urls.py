@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^(?P<comment_id>[0-9]+)/comment/', views.displayComment, name='dpc'), 
     url(r'^(?P<comment_id>[0-9]+)/markComment/$', views.processMarkedSentence, name='tabulateComments'), 
     url(r'^dummy/', views.dummy, name='dummy'), 
-    url(r'^logout/$', auth_views.logout, {'next_page': '/login/'}, name='logout'),
+    url(r'^logout/$', auth_views.logout, {'next_page': '/register/'}, name='logout'),
     url(r'^register/', views.register, name='register'), 
 ]
 
