@@ -83,6 +83,10 @@ def processMarkedSentence(request, comment_id):
         emotionsCheckBoxes=request.POST.getlist('emotion')
         ipaCheckBoxes=[int(x)-1 for x in ipaCheckBoxes]
         emotionsCheckBoxes=[int(x)-1 for x in emotionsCheckBoxes]
+        prevComment=int(comment_id)-1
+        numMarked=len(AnnotatedSentences.objects.filter(owner=user))
+        if len(ipaCheckBoxes)==0 or len(ipaCheckBoxes)>3 or len(emotionsCheckBoxes)==0 or len(emotionsCheckBoxes)>3:
+            return render(request, 'try1/detail.html', {'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':prevComment, 'numMarked':numMarked, 'error_message':'Please select at least 1 and max of 3 checkboxes from both categories'}) 
         ipaVals=[0]*12
         emotionsVal=[0]*10
         for i in ipaCheckBoxes:

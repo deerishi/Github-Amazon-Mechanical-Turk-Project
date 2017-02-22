@@ -1,6 +1,8 @@
 {% load static %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'try1/style.css' %}" />
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
 <div class="logoutButton">
 	<a href="/logout/" id="logout2">Logout</a>
 </div>
