@@ -15,8 +15,7 @@ from django.contrib.auth.forms import UserCreationForm
 from try1.forms import RegistrationForm
 from django.contrib.auth import authenticate, login
 
-
-ipaList=['Shows_Solidarity',' Shows_tension_release	','Agrees',' Gives_Suggestion',' Gives_opinion','Gives_orientation','Asks_for_orientation','    Asks_for_opinon','Asks_for_suggestion','Disagrees','Shows_Tension','Shows_Antagnism	']
+ipaList=['Shows Solidarity (help, compliment, gratify)',' Shows tension release	(josh, laugh with, cheer)','Agrees (agree with, understand,accommodate )',' Gives Suggestion (encourage, cue, coach)',' Gives opinion (evaluate, analyze, entreat)','Gives orientation (inform, educate, explain)','Asks for orientation (quiz, question, ask about)','Asks for opinon (consult, prompt, query)','Asks for suggestion (entreat, ask, beseech)','Disagrees (disagree with, ignore, hinder)','Shows Tension (fear, cajole, evade)','Shows Antagnism (argue with, deride, defy)']
 emotions=['Thanks','Sorry','Calm','Nervous','Careless','Cautious','Agressive','Defensive','Happy','Angry'] 
 class Sentiment1List(APIView):
     permission_classes = (permissions.IsAuthenticated,)

@@ -19,7 +19,7 @@
 <div class ="iboxes">
 <p> Select upto max 3 IPA labels</p>
 {% for ipa in ipaList %}
-    <input type="checkbox" name="ipa" id="ipa{{ forloop.counter }}"   value="{{ forloop.counter }} " />
+    <input type="checkbox" name="ipa" id="ipa{{ forloop.counter }}"  class="tempipa"  value="{{ forloop.counter }} " />
     <label for="ipa{{ forloop.counter }}">{{ ipa }}</label><br />
 {% endfor %}
 </div>
