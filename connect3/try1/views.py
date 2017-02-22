@@ -47,6 +47,9 @@ def displayComment(request, comment_id):
     if int(comment_id)<2:
         comment=get_object_or_404(Sentiment1, id=2)
         return render(request, 'try1/detail.html', {'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':2, 'numMarked':numMarked})
+    
+    if int(comment_id)>5:
+        return render(request, 'try1/finish.html',{'prevComment':int(comment_id-1)})  
     print('the user is ', user)
     up=get_object_or_404(UserProfile, email=user)
     print('comment_id is ', comment_id, ' and up.sentenceToMark is ', up.sentenceToMark)
