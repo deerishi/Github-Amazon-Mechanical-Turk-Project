@@ -48,7 +48,7 @@ def displayComment(request, comment_id):
         comment=get_object_or_404(Sentiment1, id=2)
         return render(request, 'try1/detail.html', {'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':2, 'numMarked':numMarked})
     
-    if int(comment_id)>5:
+    if int(comment_id)>52:
         return render(request, 'try1/finish.html',{'prevComment':int(comment_id)-1})  
     print('the user is ', user)
     up=get_object_or_404(UserProfile, email=user)
