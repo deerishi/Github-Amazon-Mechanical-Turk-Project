@@ -67,6 +67,13 @@ def dummy(request):
     up=get_object_or_404(UserProfile, email=user)
     return HttpResponseRedirect(reverse('try1:dpc', args=(up.sentenceToMark,)))
     
+@login_required 
+def displayErrorForCheckboxes(request, comment_id):
+    user=request.user
+    prevComment=int(comment_id)-1
+    comment=get_object_or_404(Sentiment1, id=comment_id)
+    numMarked=len(AnnotatedSentences.objects.filter(owner=user))
+    return render(request, 'try1/detail.html', {'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':prevComment, 'numMarked':numMarked, 'error_message':'Please select at least 1 checkbox and max 3 for each category'})
 
     
 @login_required
@@ -83,10 +90,11 @@ def processMarkedSentence(request, comment_id):
         emotionsCheckBoxes=request.POST.getlist('emotion')
         ipaCheckBoxes=[int(x)-1 for x in ipaCheckBoxes]
         emotionsCheckBoxes=[int(x)-1 for x in emotionsCheckBoxes]
-        prevComment=int(comment_id)-1
-        numMarked=len(AnnotatedSentences.objects.filter(owner=user))
+        
         if len(ipaCheckBoxes)==0 or len(ipaCheckBoxes)>3 or len(emotionsCheckBoxes)==0 or len(emotionsCheckBoxes)>3:
-            return render(request, 'try1/detail.html', {'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':prevComment, 'numMarked':numMarked, 'error_message':'Please select at least 1 and max of 3 checkboxes from both categories'}) 
+            #return HttpResponseRedirect(reverse('try1:dpc', args=(comment_id,)))
+            print(' in error bar')
+            return HttpResponseRedirect(reverse('try1:displayErrorForCheckboxes', args=(comment_id,)))
         ipaVals=[0]*12
         emotionsVal=[0]*10
         for i in ipaCheckBoxes:
