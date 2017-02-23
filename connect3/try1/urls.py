@@ -20,6 +20,8 @@ urlpatterns = [
     url(r'^(?P<comment_id>[0-9]+)/displayErrorForCheckboxes/', views.displayErrorForCheckboxes, name='displayErrorForCheckboxes'), 
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
     url(r'^register/', views.register, name='register'), 
+    url(r'(?P<comment_id>[0-9]+)/nextCommentWithoutSubmitting/', views.nextCommentWithoutSubmitting, name='nextCommentWithoutSubmitting'),
+    url(r'(?P<comment_id>[0-9]+)/notSubmitted/', views.notSubmittedError, name='notSubmittedError'), 
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

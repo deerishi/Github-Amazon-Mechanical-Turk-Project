@@ -43,14 +43,20 @@ def main(request):
 def displayComment(request, comment_id):
     user=request.user
     numMarked=len(AnnotatedSentences.objects.filter(owner=user))
+    up=get_object_or_404(UserProfile, email=user)
+    
+    if up.sentenceToMark!=int(comment_id):
+        comment=get_object_or_404(Sentiment1, id=up.sentenceToMark)
+        pv=max(2, up.sentenceToMark-1)
+        return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':pv, 'numMarked':numMarked, 'error_message':'Please mark the sentences in the sequence. Kindly do not skip sentences'})
     if int(comment_id)<2:
         comment=get_object_or_404(Sentiment1, id=2)
-        return render(request, 'try1/detail.html', {'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':2, 'numMarked':numMarked})
+        return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':2, 'numMarked':numMarked})
     
     if int(comment_id)>52:
         return render(request, 'try1/finish.html',{'prevComment':int(comment_id)-1})  
-    print('the user is ', user)
-    up=get_object_or_404(UserProfile, email=user)
+    print('the user is ', user) 
+    
     print('comment_id is ', comment_id, ' and up.sentenceToMark is ', up.sentenceToMark)
     #assert int(up.sentenceToMark)==int(comment_id)
     comment=get_object_or_404(Sentiment1, id=comment_id)
@@ -58,7 +64,7 @@ def displayComment(request, comment_id):
     #body=comment.body
     #print('Comment is ', body)
     prevComment=int(comment_id)-1
-    return render(request, 'try1/detail.html', {'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':prevComment, 'numMarked':numMarked})
+    return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':prevComment, 'numMarked':numMarked})
 
 @login_required 
 def dummy(request):
@@ -69,10 +75,10 @@ def dummy(request):
 @login_required 
 def displayErrorForCheckboxes(request, comment_id):
     user=request.user
-    prevComment=int(comment_id)-1
+    prevComment=max(2, int(comment_id)-1)
     comment=get_object_or_404(Sentiment1, id=comment_id)
     numMarked=len(AnnotatedSentences.objects.filter(owner=user))
-    return render(request, 'try1/detail.html', {'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':prevComment, 'numMarked':numMarked, 'error_message':'Please select at least 1 checkbox and max 3 for each category'})
+    return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':prevComment, 'numMarked':numMarked, 'error_message':'Please select at least 1 checkbox and max 3 for each category'})
 
     
 @login_required
@@ -146,3 +152,23 @@ def homePage(request):
         return  HttpResponseRedirect(reverse('try1:dummy'))
     else:
         return render(request, 'try1/homePage.html') 
+
+  
+@login_required 
+def notSubmittedError(request, comment_id):
+    user=request.user
+    comment_id=int(comment_id)
+    prevComment=max(int(comment_id)-1, 2)
+    numMarked=len(AnnotatedSentences.objects.filter(owner=user))
+    comment=get_object_or_404(Sentiment1, id=comment_id)
+    return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':prevComment, 'numMarked':numMarked, 'error_message':'You have not submitted the labels for this comment previously. Please annotate each comment at least once to use the Next button without submitting. '})
+
+@login_required
+def nextCommentWithoutSubmitting(request, comment_id):
+    user=request.user
+    if len(AnnotatedSentences.objects.filter(owner=user, comment_id=int(comment_id)))==0:
+        #we need to render saying that you have to submit at least once
+        return HttpResponseRedirect(reverse('try1:notSubmittedError', args=(comment_id,)))
+    else:
+        comment_id=int(comment_id)+1
+        return HttpResponseRedirect(reverse('try1:dpc', args=(comment_id,)))

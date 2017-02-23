@@ -1,31 +1,3 @@
-#logout2{
-	float: right;
-	font-size: 30px;
-	text-decoration: none;
+.options{
+	display: inline-block;
 }
-#logout:hover{
-	text-decoration: underline;
-	color: blue;
-}
-
-.eboxes{
-	margin-top: -320px;
-	margin-left: 100px;
-}
-
-.eboxes2{
-	margin-left: 200px;
-}
-.iboxes{
-	margin-left : 800px;
-}
-
-#next{
-	margin-left: 580px;
-}
-
-#back{
-	margin-left: 450px;
-	margin-top: -37px;
-}
-

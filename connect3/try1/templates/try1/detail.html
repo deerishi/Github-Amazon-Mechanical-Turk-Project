@@ -9,7 +9,6 @@
 <title>Marking {{comment.id}}</title>
 <h1>Comment {{comment.id}} </h1>
 <h2>User : {{user}} Numarked : {{numMarked}}</h2>
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 <form action="{% url 'try1:tabulateComments' comment.id %}" method="post">
 {% csrf_token %}
@@ -38,4 +37,11 @@
 <form action="{% url 'try1:dpc' prevComment %}"  method="get" id="form2">
   <input type="submit" value="Previous comment" id="back"/>
 </form>
+
+<div class="nextButton2">
+<form action="{% url 'try1:nextCommentWithoutSubmitting' comment.id %}" method="get" id="form3">
+  <input type="submit" value="Next comment without Submitting" id="back"/>
+</form>
+</div>
+
 
