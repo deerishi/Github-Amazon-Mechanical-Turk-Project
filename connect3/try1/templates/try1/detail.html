@@ -7,7 +7,7 @@
 	<a href="/logout/" id="logout2">Logout</a>
 </div>
 <title>Marking {{comment_id}}</title>
-<h1>Comment {{comment.id}} </h1>
+<h1>Comment {{comment_id}} </h1>
 <h2>User : {{user}} Numarked : {{numMarked}}</h2>
 
 <form action="{% url 'try1:tabulateComments' comment.id %}" method="post">
