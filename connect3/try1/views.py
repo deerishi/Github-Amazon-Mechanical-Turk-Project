@@ -192,11 +192,11 @@ def nextCommentWithoutSubmitting(request, comment_id):
 @login_required
 def displayDataAnnotatedByUser(request):
     user=request.user
-    lastCommentStoredInTable=0
+    lastCommentStoredInTable=-1
     getDict=DisplayTableOfMarkedComments.objects.filter(Person=user).aggregate(Max('CommentId'))
     if getDict['CommentId__max'] is not None:
         lastCommentStoredInTable=getDict['CommentId__max']
-    
+    lastCommentStoredInTable+=2
     print('lastCommentStoredInTable is ', lastCommentStoredInTable)
     data=AnnotatedSentences.objects.filter(owner=user, comment_id__gt=lastCommentStoredInTable)
     for obj in data:
