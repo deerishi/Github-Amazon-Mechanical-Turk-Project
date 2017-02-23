@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^register/', views.register, name='register'), 
     url(r'(?P<comment_id>[0-9]+)/nextCommentWithoutSubmitting/', views.nextCommentWithoutSubmitting, name='nextCommentWithoutSubmitting'),
     url(r'(?P<comment_id>[0-9]+)/notSubmitted/', views.notSubmittedError, name='notSubmittedError'), 
+    url(r'^(?P<comment_id>[0-9]+)/goToPreviousComment/', views.goBackDisplayComment, name='gbdpc'), 
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -40,20 +40,33 @@ def main(request):
     return HttpResponse('hello world')
 
 @login_required
+def goBackDisplayComment(request, comment_id):
+    comment_id=max(int(comment_id), 2)
+    user=request.user
+    comment=get_object_or_404(Sentiment1, id=comment_id)
+    pv=max(comment_id-1, 2)
+    numMarked=len(AnnotatedSentences.objects.filter(owner=user))
+    return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':pv, 'numMarked':numMarked})
+
+    
+
+@login_required
 def displayComment(request, comment_id):
     user=request.user
     numMarked=len(AnnotatedSentences.objects.filter(owner=user))
     up=get_object_or_404(UserProfile, email=user)
-    
-    if up.sentenceToMark!=int(comment_id):
+    if up.sentenceToMark<int(comment_id):
         comment=get_object_or_404(Sentiment1, id=up.sentenceToMark)
         pv=max(2, up.sentenceToMark-1)
+        request.session['previousComment']=comment.id
         return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':pv, 'numMarked':numMarked, 'error_message':'Please mark the sentences in the sequence. Kindly do not skip sentences'})
     if int(comment_id)<2:
         comment=get_object_or_404(Sentiment1, id=2)
+        request.session['previousComment']=comment.id
         return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':2, 'numMarked':numMarked})
     
     if int(comment_id)>52:
+        request.session['previousComment']=comment.id
         return render(request, 'try1/finish.html',{'prevComment':int(comment_id)-1})  
     print('the user is ', user) 
     
@@ -78,6 +91,7 @@ def displayErrorForCheckboxes(request, comment_id):
     prevComment=max(2, int(comment_id)-1)
     comment=get_object_or_404(Sentiment1, id=comment_id)
     numMarked=len(AnnotatedSentences.objects.filter(owner=user))
+    request.session['previousComment']=comment.id
     return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':prevComment, 'numMarked':numMarked, 'error_message':'Please select at least 1 checkbox and max 3 for each category'})
 
     
@@ -161,6 +175,7 @@ def notSubmittedError(request, comment_id):
     prevComment=max(int(comment_id)-1, 2)
     numMarked=len(AnnotatedSentences.objects.filter(owner=user))
     comment=get_object_or_404(Sentiment1, id=comment_id)
+    request.session['previousComment']=comment.id
     return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':prevComment, 'numMarked':numMarked, 'error_message':'You have not submitted the labels for this comment previously. Please annotate each comment at least once to use the Next button without submitting. '})
 
 @login_required
