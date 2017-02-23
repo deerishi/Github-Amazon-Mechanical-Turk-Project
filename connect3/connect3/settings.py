@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*', 'deerishi.pythonanywhere.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'django_tables2', 
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -61,6 +62,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
+                'django.template.context_processors.request', 
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -85,6 +87,7 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
 
 
 # Password validation

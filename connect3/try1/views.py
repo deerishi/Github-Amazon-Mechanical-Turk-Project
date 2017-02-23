@@ -187,3 +187,9 @@ def nextCommentWithoutSubmitting(request, comment_id):
     else:
         comment_id=int(comment_id)+1
         return HttpResponseRedirect(reverse('try1:dpc', args=(comment_id,)))
+
+@login_required
+def displayDataAnnotatedByUser(request):
+    user=request.user
+    data=AnnotatedSentences.objects.filter(owner=user)
+    return render(request, 'try1/markedByPeople.html', {'data': data})

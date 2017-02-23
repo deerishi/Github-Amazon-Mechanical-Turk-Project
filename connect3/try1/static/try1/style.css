@@ -8,6 +8,16 @@
 	color: blue;
 }
 
+#checkTable{
+	float: left;
+	font-size: 30px;
+	text-decoration: none;
+}
+#checkTable:hover{
+	text-decoration: underline;
+	color: blue;
+}
+
 .eboxes{
 	margin-top: -400px;
 	margin-left: 100px;
