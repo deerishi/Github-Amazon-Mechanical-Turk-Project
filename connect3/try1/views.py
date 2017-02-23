@@ -1,4 +1,4 @@
-from try1.models import Sentiment1,  UserProfile, AnnotatedSentences, DisplayTableOfMarkedComments
+from try1.models import Sentiment1,  UserProfile, AnnotatedSentences, DisplayTableOfMarkedComments, HITTable
 from try1.serializers import Sentiment1Serializer, UserSerializer
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.contrib import messages
@@ -15,6 +15,7 @@ from django.contrib.auth.forms import UserCreationForm
 from try1.forms import RegistrationForm
 from django.db.models import Max
 from django.contrib.auth import authenticate, login
+from random import randint
 
 ipaList=['Shows Solidarity (help, compliment, gratify)',' Shows tension release	(josh, laugh with, cheer)','Agrees (agree with, understand,accommodate )',' Gives Suggestion (encourage, cue, coach)',' Gives opinion (evaluate, analyze, entreat)','Gives orientation (inform, educate, explain)','Asks for orientation (quiz, question, ask about)','Asks for opinon (consult, prompt, query)','Asks for suggestion (entreat, ask, beseech)','Disagrees (disagree with, ignore, hinder)','Shows Tension (fear, cajole, evade)','Shows Antagonism (argue with, deride, defy)']
 emotions=['Thanks','Sorry','Calm','Nervous','Careless','Cautious','Agressive','Defensive','Happy','Angry'] 
@@ -64,8 +65,10 @@ def displayComment(request, comment_id):
         comment=get_object_or_404(Sentiment1, id=2)
         return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':2, 'numMarked':numMarked})
     
-    if int(comment_id)>102:
-        return render(request, 'try1/finish.html',{'prevComment':int(comment_id)-1})  
+    if int(comment_id)>52:
+        rn=randint(1000000, 2000000)
+        HITTable.objects.create(person=user, hitCode=rn)
+        return render(request, 'try1/finish.html',{'prevComment':int(comment_id)-1, 'rn':rn})  
     print('the user is ', user) 
     
     print('comment_id is ', comment_id, ' and up.sentenceToMark is ', up.sentenceToMark)

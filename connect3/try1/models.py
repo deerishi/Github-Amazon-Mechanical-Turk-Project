@@ -53,4 +53,7 @@ class DisplayTableOfMarkedComments(models.Model):
     Marked=models.TextField()
     CommentId=models.IntegerField(default=0)
     
-    
+
+class HITTable(models.Model):
+    person=models.ForeignKey(User)
+    hitCode=models.BigIntegerField()
