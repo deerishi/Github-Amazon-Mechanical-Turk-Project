@@ -17,10 +17,10 @@
 <form action="{% url 'try1:tabulateComments' comment.id %}" method="post">
 {% csrf_token %}
 <textarea rows="10" cols="150" name="comment" wrap="hard">{{comment.body}}</textarea>
+<p> Select at least 1 and upto max 3  labels that best describe what the user is trying to convey</p>
 
 <div class="boxes">
 <div class ="iboxes">
-<p> Select upto max 3 IPA labels</p>
 {% for ipa in ipaList %}
     <input type="checkbox" name="ipa" id="ipa{{ forloop.counter }}"  class="tempipa"  value="{{ forloop.counter }} " />
     <label for="ipa{{ forloop.counter }}">{{ ipa }}</label><br />

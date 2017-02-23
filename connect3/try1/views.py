@@ -1,4 +1,4 @@
-from try1.models import Sentiment1,  UserProfile, AnnotatedSentences
+from try1.models import Sentiment1,  UserProfile, AnnotatedSentences, DisplayTableOfMarkedComments
 from try1.serializers import Sentiment1Serializer, UserSerializer
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.contrib import messages
@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm
 from try1.forms import RegistrationForm
+from django.db.models import Max
 from django.contrib.auth import authenticate, login
 
 ipaList=['Shows Solidarity (help, compliment, gratify)',' Shows tension release	(josh, laugh with, cheer)','Agrees (agree with, understand,accommodate )',' Gives Suggestion (encourage, cue, coach)',' Gives opinion (evaluate, analyze, entreat)','Gives orientation (inform, educate, explain)','Asks for orientation (quiz, question, ask about)','Asks for opinon (consult, prompt, query)','Asks for suggestion (entreat, ask, beseech)','Disagrees (disagree with, ignore, hinder)','Shows Tension (fear, cajole, evade)','Shows Antagnism (argue with, deride, defy)']
@@ -191,5 +192,60 @@ def nextCommentWithoutSubmitting(request, comment_id):
 @login_required
 def displayDataAnnotatedByUser(request):
     user=request.user
-    data=AnnotatedSentences.objects.filter(owner=user)
+    lastCommentStoredInTable=0
+    getDict=DisplayTableOfMarkedComments.objects.filter(Person=user).aggregate(Max('CommentId'))
+    if getDict['CommentId__max'] is not None:
+        lastCommentStoredInTable=getDict['CommentId__max']
+    
+    print('lastCommentStoredInTable is ', lastCommentStoredInTable)
+    data=AnnotatedSentences.objects.filter(owner=user, comment_id__gt=lastCommentStoredInTable)
+    for obj in data:
+        string1=""
+        if obj.shows_solidarity==1:
+            string1+="Shows solidarity ,"
+        if obj.shows_tension_release ==1:
+            string1+="Shows tension release  ,"
+        if obj.agrees==1:
+            string1+="Agrees ,"
+        if obj.gives_suggestion==1:
+            string1+="Gives Suggestion ,"
+        if obj.gives_opinion==1:
+            string1+="Gives Opinion ,"
+        if obj.gives_orientation==1:
+            string1+="Gives Orientation ,"
+        if obj.asks_for_orientation==1:
+            string1+="Asks for orientation ,"
+        if obj.asks_for_opinon==1:
+            string1+="Asks for opinon ,"
+        if obj.asks_for_suggestion==1:
+            string1+="Asks for suggestion ,"
+        if obj.disagrees==1:
+            string1+="Disagrees ,"
+        if obj.shows_tension==1:
+            string1+="Shows tension ,"
+        if obj.shows_antagnism==1:
+            string1+="Shows antagnism ,"
+        string1+="    . The  emotions are : "
+        if obj.thanks==1:
+            string1+="Thanks , "
+        if obj.sorry==1:
+            string1+="Sorry , "
+        if obj.calm==1:
+            string1+="Calm , "
+        if obj.nervous==1:
+            string1+="Nervous , "
+        if obj.careless==1:
+            string1+="careless , "
+        if obj.cautious==1:
+            string1+="cautious , "
+        if obj.agressive==1:
+            string1+="Agressive , "
+        if obj.defensive==1:
+            string1+="Defensive , "
+        if obj.happy==1:
+            string1+="Happy , "
+        if obj.angry==1:
+            string1+="Angry ,"
+        DisplayTableOfMarkedComments.objects.create(Person=user,Comment=obj.body, Marked=string1, CommentId=obj.comment_id )
+    data=DisplayTableOfMarkedComments.objects.filter(Person=user)    
     return render(request, 'try1/markedByPeople.html', {'data': data})

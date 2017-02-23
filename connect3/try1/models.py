@@ -46,3 +46,11 @@ class AnnotatedSentences(models.Model):
     defensive = models.BigIntegerField(db_column='Defensive', blank=True, null=True)  # Field name made lowercase.
     happy = models.BigIntegerField(db_column='Happy', blank=True, null=True)  # Field name made lowercase.
     angry = models.BigIntegerField(db_column='Angry', blank=True, null=True)  # Field name made lowercase.
+
+class DisplayTableOfMarkedComments(models.Model):
+    Person=models.ForeignKey(User)
+    Comment=models.TextField()
+    Marked=models.TextField()
+    CommentId=models.IntegerField(default=0)
+    
+    
