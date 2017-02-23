@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 't-wypz!sfby6)hzta0m%)u^d#551t&w-sx*s7o7gbu%qk^b1%@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*', 'deerishi.pythonanywhere.com']
 
@@ -80,14 +80,13 @@ WSGI_APPLICATION = 'connect3.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'thesis',
-        'USER': 'root',
+        'NAME': 'deerishi$thesis2',
+        'USER': 'deerishi',
         'PASSWORD': 'resnick1',
-        'HOST': '127.0.0.1',   # Or an IP Address that your DB is hosted on
+        'HOST': 'deerishi.mysql.pythonanywhere-services.com',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
