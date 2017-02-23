@@ -4,8 +4,134 @@
 
 <center>
 <h1> Multi Label Classification of Github comments</h1>
-<div class="options">
-<a href="/login/" id="loginOp">Login</a>
-<a href="/register/" id="registerOp">Register</a>
+
 
 </center>
+
+<p>
+Thanks for agreeing to take part in the project.
+
+The project’s aim is to understand how conversations take place on the website Github.com.
+
+Github is like a social network for programmers. For example on Facebook or twitter , people post their pictures and other people comment on them. On Github people post their segments of code , and other people comment on
+<ul>
+<li>how good/bad 	the code is, 		</li>
+<li>If the code 	does not work , people suggest ways on how to make it work</li>
+</ul>
+
+
+
+Here the data set we are dealing is from such interactions. People commenting on other people’s code.
+
+Consider this , if you send a FRIEND REQUEST to someone on Facebook , the other person would have to ACCEPT it.
+Github operates in a similar manner. Instead of friend requests, people send other people something called a PULL REQUEST (which is basically a couple of lines of code ) . On Facebook the friend request is accepted, on Github the Pull Request gets MERGED ( which means that other people have accepted the code you have written).
+
+In all the sentences in this project, one person sends a piece of code (a.k.a. pull request ) in hopes of getting it merged (a.k.a accepted) . Other people comment on the piece of code explaining what needs to be done to improve the code in order to get it merged.
+
+We would want you to label the sentences in the following 2 categories and remove any unnecessary lines of code in the sentence :
+
+<div class="task1">
+<h3><strong><u>Task 1:</u> </strong></</h3>
+<p>
+First category consists of the following 12 subcategories . The words in the brackets in the bracket signifies type of behaviour portrayed in the sentence. You have to select at least 1 and a maximum of 3 sub categories for each sentence.
+<ul>
+<li> Shows Solidarity (help, compliment, gratify) </li>
+<li> Shows tension release	(josh, laugh with, cheer)</li>
+<li> Agrees (agree 	with, understand,accommodate )</li>
+<li> Gives Suggestion (encourage, cue, coach)</li>
+<li> Gives opinion (evaluate, analyze, entreat)</li>
+<li> Gives orientation (inform, educate, explain)</li>
+<li> Asks for orientation (quiz, question, ask about)	</li>
+<li> Asks for opinion (consult, prompt, query)	</li>
+<li> Asks for suggestion (entreat, ask, beseech)	</li>
+<li> Disagrees 	(disagree with, ignore, hinder)</li>
+<li> Shows Tension 	(fear, cajole, evade)</li>
+<li> Shows Antagonism (argue with, deride, defy)</li>
+</ul>
+</p>
+</div>
+
+<div class="task2">
+<h3><strong><u>Task 2:</u> </strong></</h3>
+<p>
+The second category is the kind of emotion displayed by the person writing the comment. Again there are 10 different categories. You have to select at least 1 and a maximum of 3 emotions for each sentence.
+<ul>	
+<li>Thanks</li>
+<li>Sorry</li>
+<li>Calm </li>
+<li>Nervous	</li>
+<li>Careless </li>
+<li>Cautious </li>
+<li>Aggressive </li>
+<li>Defensive</li>
+<li>Happy</li>
+<li>Angry</li>
+</ul>
+</p>
+</div>
+
+<div class="task3">
+<h3><strong><u>Task 3:</u> </strong></h3>
+<p>
+Removing  unnecessary lines of code. In the website, the section where the sentence is displayed, you are allowed to modify the sentence. 
+If you come across any unnecessary lines of code ( which can be identified as anything not written in english ), you can simple use the backspace key to erase those. 
+
+For example for the sentence 
+<p><i> 	 	
+Added test to ensure single class is passed. Multiple classes gave false positive.
+e.g.
+ &lt; div id="id" class="class class2"&gt;&lt;/div&gt;
+$("#id").hasClass("class class2") => false
+</i>
+</p>
+
+The latter part of the sentence is all code, you should erase that so that the sentence becomes 
+
+<p><i>	 	 	
+Added test to ensure single class is passed. Multiple classes gave false positive.
+</i>
+</p>
+
+<div class="Instructions">
+<h3><strong><u>Instructions on how to label a sentence.</u> </strong></h3>
+<p>
+
+You do not have to understand what exactly is going on in a sentence. Since , each comment can involve a lot of programming dependent terminology. The way to label the sentences is as follows :
+
+Looks for a sequence of words would describe what the person did :
+For example :
+
+Sentence:
+
+<p><i>
+fallback for wildcard since there is no support to remove all classes and another loop didn't seem to make sense... there is an issue with the wildcard (existing) where removeClass("*") gives invalid argument error.
+</i>
+</p>
+
+The above sentence is a bit hard to label in the 2 categories. The way to proceed is to look for a sequence of words that describe what the person did or is trying to convey:
+<p><i>
+fallback for wildcard since there is no support to remove all classes and another loop didn't seem to make sense...<b> there is an issue with the</b> wildcard (existing) where removeClass("*") <b>gives invalid argument error.</b>
+</i>
+</p>
+
+The bold part of the sentence, signifies that the person is trying to convey that there is some issue which gives a error.
+Now based on this bolded part, you have to label in the 2 categories.
+
+In the first category you could choose : Disagrees , Shows antagonism
+For the emotion you could choose : Aggressive
+
+</p>
+</div>
+</p>
+
+
+<center>
+	<div class="options">
+<a href="/login/" id="loginOp">Login</a>
+<a href="/register/" id="registerOp">Register</a>
+</center>
+
+
+
+
+
