@@ -308,7 +308,7 @@ def checkWhatPeopleMarked(request, user_name):
             if obj.angry==1:
                 string1+="Angry ,"
             DisplayTableOfMarkedComments.objects.create(Person=user,Comment=obj.body, Marked=string1, CommentId=obj.comment_id -2)
-            data=DisplayTableOfMarkedComments.objects.filter(Person=user)    
+        data=DisplayTableOfMarkedComments.objects.filter(Person=user)    
         return render(request, 'try1/markedByPeople.html', {'data': data})
     else:
         return Http404
