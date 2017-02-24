@@ -1,5 +1,5 @@
-from try1.models import Sentiment1,  UserProfile, AnnotatedSentences, DisplayTableOfMarkedComments, HITTable
-from try1.serializers import Sentiment1Serializer, UserSerializer ,  UserProfileSerializer
+from try1.models import *
+from try1.serializers import *
 from django.http import  HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.contrib import messages
 from rest_framework.views import APIView
@@ -9,7 +9,7 @@ from rest_framework import permissions
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from try1.forms import RegistrationForm
+from try1.forms import *
 from django.db.models import Max
 from django.contrib.auth import authenticate, login
 from random import randint
@@ -71,15 +71,10 @@ def displayComment(request, comment_id):
         return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':2, 'numMarked':numMarked})
     
     if int(comment_id)>52:
-        rn=randint(1000000, 2000000)
-        hitobj=HITTable.objects.filter(person=user)
-        if len(hitobj)==0:
-            rn=randint(1000000, 2000000)
-            HITTable.objects.create(person=user, hitCode=rn)
+        if up.hasGivenFeedback==True:
+            return HttpResponseRedirect(reverse('try1:renderFinishPage'))
         else:
-            hitobj=HITTable.objects.get(person=user)
-            rn=hitobj.hitCode
-        return render(request, 'try1/finish.html',{'prevComment':int(comment_id)-1, 'rn':rn})  
+            return HttpResponseRedirect(reverse('try1:renderFeedBackForm'))
     print('the user is ', user) 
     
     print('comment_id is ', comment_id, ' and up.sentenceToMark is ', up.sentenceToMark)
@@ -114,7 +109,7 @@ def processMarkedSentence(request, comment_id):
         comment=request.POST['comment']
         print('The edited commment is ', comment)
         up=UserProfile.objects.get(email=user)
-        up.sentenceToMark=int(comment_id) +1
+        up.sentenceToMark=max(int(comment_id) +1, up.sentenceToMark)
         up.save()
         ipaCheckBoxes=request.POST.getlist('ipa')
         emotionsCheckBoxes=request.POST.getlist('emotion')
@@ -321,5 +316,63 @@ def checkWhatPeopleMarked(request, user_name):
             DisplayTableOfMarkedComments.objects.create(Person=user,Comment=obj.body, Marked=string1, CommentId=obj.comment_id -2)
         data=DisplayTableOfMarkedComments.objects.filter(Person=user)    
         return render(request, 'try1/markedByPeople.html', {'data': data})
+    else:
+        return  HttpResponseNotFound('<h1>No Page Here</h1>')  
+
+@login_required
+def renderFeedBackForm(request):
+    user=request.user
+    up=UserProfile.objects.get(email=user)
+    if up.sentenceToMark- 2 < totalToMark:
+        return HttpResponseRedirect(reverse('try1:dpc', args=(up.sentenceToMark,)))
+    form=FeedBackForm()
+    return render(request, 'try1/renderFeedBackForm.html', {'form':form})
+
+@login_required
+def renderFinishPage(request):
+    user=request.user
+        
+    up=UserProfile.objects.get(email=user)
+    if up.hasGivenFeedback==True:
+        rn=randint(1000000, 2000000)
+        hitobj=HITTable.objects.filter(person=user)
+        if len(hitobj)==0:
+            rn=randint(1000000, 2000000)
+            HITTable.objects.create(person=user, hitCode=rn)
+        else:
+            hitobj=HITTable.objects.get(person=user)
+            rn=hitobj.hitCode
+        return render(request, 'try1/finish.html',{'prevComment':int(up.sentenceToMark)-1, 'rn':rn})
+
+    else:
+        return HttpResponseRedirect(reverse('try1:renderFeedBackForm'))
+
+@login_required
+def processFeedBack(request):
+    if request.method=='POST':
+        print('In processFeedBack')
+        user=request.user
+        form = FeedBackForm(data=request.POST )
+        up=UserProfile.objects.get(email=user)
+        if up.hasGivenFeedback==True:
+            return HttpResponseRedirect(reverse('try1:renderFinishPage'))
+        else:
+            up.hasGivenFeedback=True
+            up.save()
+            print('Feedback form is ', form)
+            if form.is_valid():
+                
+                RecordFeedBack.objects.create(person=user, feedback=form.cleaned_data['feedback'])
+                return HttpResponseRedirect(reverse('try1:renderFinishPage'))
+            else:
+                return HttpResponseRedirect(reverse('try1:renderFeedBackForm'))
+    else:
+        return HttpResponseRedirect(reverse('try1:renderFeedBackForm'))
+
+@login_required
+def displayFeedback(request):
+    if request.user.is_superuser:
+        data=RecordFeedBack.objects.all()   
+        return render(request, 'try1/displayFeedback.html', {'data': data})
     else:
         return  HttpResponseNotFound('<h1>No Page Here</h1>')  

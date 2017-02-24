@@ -1,0 +1,14 @@
+<center>
+
+<p><strong> Please answer the following questions in order to get the HIT code </strong></p>
+<ul>
+	<li> How was your experience ? Did you experience any crashes ?</li>
+	<li> Did you have any programming experience ?</li>
+	<li> Prior to this task did you know about Github.com ?</li>
+</ul>
+<form action="{% url 'try1:processFeedBack'  %}" method="post">
+	{% csrf_token %}
+    {{ form.as_p }}
+     <input type="submit" value="Submit " id="submitFeedBack"/>
+</form>
+</center>

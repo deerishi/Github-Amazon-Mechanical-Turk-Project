@@ -1,0 +1,16 @@
+{% load render_table from django_tables2 %}
+{% load static %}
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
+    </head>
+    <body>
+    <div id="feedback">
+    	<a href="/dummy/" id="rwork">Resume Labelling Comments from last Marked Comment</a>
+    </div>
+    <div class="table">
+        {% render_table data %}
+    </div>
+    </body>
+</html>

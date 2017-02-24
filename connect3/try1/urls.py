@@ -26,7 +26,10 @@ urlpatterns = [
     url(r'^(?P<comment_id>[0-9]+)/goToPreviousComment/', views.goBackDisplayComment, name='gbdpc'), 
     url(r'^displayDataAnnotatedByUser/', views.displayDataAnnotatedByUser, name='displayDataAnnotatedByUser'),
     url(r'^checkData/(?P<user_name>[0-9a-zA-Z]+)/', views.checkWhatPeopleMarked, name='checkWhatPeopleMarked'),
-    
+    url(r'^renderFeedBackForm/', views.renderFeedBackForm, name='renderFeedBackForm'), 
+    url(r'^renderFinishPage/', views.renderFinishPage, name='renderFinishPage'), 
+    url(r'^displayFeedback/', views.displayFeedback, name='displayFeedback'),
+    url(r'^processFeedBack/', views.processFeedBack, name='processFeedBack'), 
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -31,3 +31,6 @@ class RegistrationForm(forms.Form):
             print('User exists in form')
             raise forms.ValidationError("This username has already registered.")
         return username
+
+class FeedBackForm(forms.Form):
+    feedback=forms.CharField(widget=forms.Textarea, required=True)

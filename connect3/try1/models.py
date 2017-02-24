@@ -19,6 +19,7 @@ class Sentiment1(models.Model):
 class UserProfile(models.Model):
     email=models.ForeignKey(User)
     sentenceToMark=models.IntegerField(default=2)
+    hasGivenFeedback=models.BooleanField(default=False)
     
     @property
     def email_username(self):
@@ -72,3 +73,7 @@ class DisplayTableOfMarkedComments(models.Model):
 class HITTable(models.Model):
     person=models.ForeignKey(User)
     hitCode=models.BigIntegerField()
+
+class RecordFeedBack(models.Model):
+    person=models.ForeignKey(User)
+    feedback=models.TextField()
