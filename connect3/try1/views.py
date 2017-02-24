@@ -16,7 +16,7 @@ from try1.forms import RegistrationForm
 from django.db.models import Max
 from django.contrib.auth import authenticate, login
 from random import randint
-
+totalToMark=50
 ipaList=['Shows Solidarity (help, compliment, gratify)',' Shows tension release	(josh, laugh with, cheer)','Agrees (agree with, understand,accommodate )',' Gives Suggestion (encourage, cue, coach)',' Gives opinion (evaluate, analyze, entreat)','Gives orientation (inform, educate, explain)','Asks for orientation (quiz, question, ask about)','Asks for opinon (consult, prompt, query)','Asks for suggestion (entreat, ask, beseech)','Disagrees (disagree with, ignore, hinder)','Shows Tension (fear, cajole, evade)','Shows Antagonism (argue with, deride, defy)']
 emotions=['Thanks','Sorry','Calm','Nervous','Careless','Cautious','Agressive','Defensive','Happy','Angry'] 
 class Sentiment1List(APIView):
@@ -57,7 +57,7 @@ def displayComment(request, comment_id):
     user=request.user
     numMarked=len(AnnotatedSentences.objects.filter(owner=user))
     up=get_object_or_404(UserProfile, email=user)
-    if up.sentenceToMark<int(comment_id):
+    if up.sentenceToMark<int(comment_id) and numMarked<totalToMark:
         comment=get_object_or_404(Sentiment1, id=up.sentenceToMark)
         pv=max(2, up.sentenceToMark-1)
         return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':pv, 'numMarked':numMarked, 'error_message':'Please mark the sentences in the sequence. Kindly do not skip sentences'})

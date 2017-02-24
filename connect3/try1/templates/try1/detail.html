@@ -1,6 +1,6 @@
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'try1/style2.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'try1/style.css' %}" />
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 <div class="logoutButton">
@@ -36,6 +36,7 @@
 {% endfor %}
 </div>
 </div>
+<br><br><br><br>
 <input type="submit" value="Submit and Next comment" id="next"/>
 </form>
 <form action="{% url 'try1:dpc' prevComment %}"  method="get" id="form2">
