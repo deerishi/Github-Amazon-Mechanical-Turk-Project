@@ -15,9 +15,13 @@ class UserSerializer(serializers.ModelSerializer):
         
 class UserProfileSerializer(serializers.ModelSerializer):
     email_username=serializers.ReadOnlyField()
+    email_email=serializers.ReadOnlyField()
+    email_first_name=serializers.ReadOnlyField()
+    email_last_name=serializers.ReadOnlyField()
+    
     class Meta:
         model=UserProfile
-        fields=('email_username','sentenceToMark')
+        fields=('sentenceToMark', 'email_username', 'email_email','email_first_name','email_last_name')
         
 
 class AnnotatedSentencesSerilzer(serializers.ModelSerializer):

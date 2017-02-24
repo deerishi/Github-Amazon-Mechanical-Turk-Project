@@ -23,6 +23,17 @@ class UserProfile(models.Model):
     @property
     def email_username(self):
         return self.email.username
+    
+    @property
+    def email_email(self):
+        return self.email.email
+    @property
+    def email_first_name(self):
+        return self.email.first_name
+    
+    @property
+    def email_last_name(self):
+        return self.email.last_name
 
 class AnnotatedSentences(models.Model):
     comment_id=models.IntegerField(null=True, blank=True)
