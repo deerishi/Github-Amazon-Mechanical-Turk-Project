@@ -67,7 +67,12 @@ def displayComment(request, comment_id):
     
     if int(comment_id)>52:
         rn=randint(1000000, 2000000)
-        HITTable.objects.create(person=user, hitCode=rn)
+        hitobj=HITTable.objects.filter(person=user)
+        if len(hitobj)==0:
+            HITTable.objects.create(person=user, hitCode=rn)
+        else:
+            rn=hitobj.hitCode
+        
         return render(request, 'try1/finish.html',{'prevComment':int(comment_id)-1, 'rn':rn})  
     print('the user is ', user) 
     
