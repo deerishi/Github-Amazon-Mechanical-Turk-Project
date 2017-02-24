@@ -13,6 +13,7 @@ urlpatterns = [
     #url(r'^logout/$', auth_views.logout, name='logout'), 
     #url(r'^api-auth/', include('rest_framework.urls',namespace='rest_framework')),
     url(r'^users/', views.UserList.as_view()), 
+    url(r'^usersProfile/', views.UserProfileList.as_view()), 
     url(r'^main/', views.main, name='main'), 
     url(r'^(?P<comment_id>[0-9]+)/comment/', views.displayComment, name='dpc'), 
     url(r'^(?P<comment_id>[0-9]+)/markComment/$', views.processMarkedSentence, name='tabulateComments'), 

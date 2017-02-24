@@ -19,6 +19,10 @@ class Sentiment1(models.Model):
 class UserProfile(models.Model):
     email=models.ForeignKey(User)
     sentenceToMark=models.IntegerField(default=2)
+    
+    @property
+    def email_username(self):
+        return self.email.username
 
 class AnnotatedSentences(models.Model):
     comment_id=models.IntegerField(null=True, blank=True)

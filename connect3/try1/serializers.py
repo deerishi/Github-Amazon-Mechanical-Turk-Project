@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from try1.models import Sentiment1,  AnnotatedSentences
+from try1.models import Sentiment1,  AnnotatedSentences , UserProfile
 from django.contrib.auth.models import User
 
 class Sentiment1Serializer(serializers.ModelSerializer):
@@ -11,7 +11,13 @@ class Sentiment1Serializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model=User
-        fields=('id', 'email', 'first_name', 'last_name')
+        fields=('id','username',  'email', 'first_name', 'last_name')
+        
+class UserProfileSerializer(serializers.ModelSerializer):
+    email_username=serializers.ReadOnlyField()
+    class Meta:
+        model=UserProfile
+        fields=('email_username','sentenceToMark')
         
 
 class AnnotatedSentencesSerilzer(serializers.ModelSerializer):

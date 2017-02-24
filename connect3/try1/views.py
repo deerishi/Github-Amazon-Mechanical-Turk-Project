@@ -1,17 +1,14 @@
 from try1.models import Sentiment1,  UserProfile, AnnotatedSentences, DisplayTableOfMarkedComments, HITTable
-from try1.serializers import Sentiment1Serializer, UserSerializer
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from try1.serializers import Sentiment1Serializer, UserSerializer ,  UserProfileSerializer
+from django.http import  HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.contrib import messages
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
 from django.contrib.auth.models import User
-from rest_framework import generics
 from rest_framework import permissions
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from django.contrib.auth.forms import UserCreationForm
 from try1.forms import RegistrationForm
 from django.db.models import Max
 from django.contrib.auth import authenticate, login
@@ -32,6 +29,14 @@ class UserList(APIView):
     def get(self, request, format=None):
         users=User.objects.all()
         serializer=UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+
+class UserProfileList(APIView):
+    
+    def get(self, request, format=None):
+        users=UserProfile.objects.all()
+        serializer=UserProfileSerializer(users, many=True)
         return Response(serializer.data)
 
 @login_required
@@ -317,4 +322,4 @@ def checkWhatPeopleMarked(request, user_name):
         data=DisplayTableOfMarkedComments.objects.filter(Person=user)    
         return render(request, 'try1/markedByPeople.html', {'data': data})
     else:
-        return Http404
+        return  HttpResponseNotFound('<h1>No Page Here</h1>')  
