@@ -248,3 +248,67 @@ def displayDataAnnotatedByUser(request):
         DisplayTableOfMarkedComments.objects.create(Person=user,Comment=obj.body, Marked=string1, CommentId=obj.comment_id -2)
     data=DisplayTableOfMarkedComments.objects.filter(Person=user)    
     return render(request, 'try1/markedByPeople.html', {'data': data})
+
+@login_required
+def checkWhatPeopleMarked(request, user_name):
+    if request.user.is_superuser:
+        user=get_object_or_404(User, username=user_name)
+        lastCommentStoredInTable=-1
+        getDict=DisplayTableOfMarkedComments.objects.filter(Person=user).aggregate(Max('CommentId'))
+        if getDict['CommentId__max'] is not None:
+            lastCommentStoredInTable=getDict['CommentId__max']
+        lastCommentStoredInTable+=2
+        print('lastCommentStoredInTable is ', lastCommentStoredInTable)
+        data=AnnotatedSentences.objects.filter(owner=user, comment_id__gt=lastCommentStoredInTable)
+        for obj in data:
+            string1=""
+            if obj.shows_solidarity==1:
+                string1+="Shows solidarity ,"
+            if obj.shows_tension_release ==1:
+                string1+="Shows tension release  ,"
+            if obj.agrees==1:
+                string1+="Agrees ,"
+            if obj.gives_suggestion==1:
+                string1+="Gives Suggestion ,"
+            if obj.gives_opinion==1:
+                string1+="Gives Opinion ,"
+            if obj.gives_orientation==1:
+                string1+="Gives Orientation ,"
+            if obj.asks_for_orientation==1:
+                string1+="Asks for orientation ,"
+            if obj.asks_for_opinon==1:
+                string1+="Asks for opinon ,"
+            if obj.asks_for_suggestion==1:
+                string1+="Asks for suggestion ,"
+            if obj.disagrees==1:
+                string1+="Disagrees ,"
+            if obj.shows_tension==1:
+                string1+="Shows tension ,"
+            if obj.shows_antagnism==1:
+                string1+="Shows antagnism ,"
+            string1+="    . The  emotions are : "
+            if obj.thanks==1:
+                string1+="Thanks , "
+            if obj.sorry==1:
+                string1+="Sorry , "
+            if obj.calm==1:
+                string1+="Calm , "
+            if obj.nervous==1:
+                string1+="Nervous , "
+            if obj.careless==1:
+                string1+="careless , "
+            if obj.cautious==1:
+                string1+="cautious , "
+            if obj.agressive==1:
+                string1+="Agressive , "
+            if obj.defensive==1:
+                string1+="Defensive , "
+            if obj.happy==1:
+                string1+="Happy , "
+            if obj.angry==1:
+                string1+="Angry ,"
+            DisplayTableOfMarkedComments.objects.create(Person=user,Comment=obj.body, Marked=string1, CommentId=obj.comment_id -2)
+            data=DisplayTableOfMarkedComments.objects.filter(Person=user)    
+        return render(request, 'try1/markedByPeople.html', {'data': data})
+    else:
+        return Http404

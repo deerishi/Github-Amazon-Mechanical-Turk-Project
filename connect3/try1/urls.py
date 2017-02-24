@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'(?P<comment_id>[0-9]+)/notSubmitted/', views.notSubmittedError, name='notSubmittedError'), 
     url(r'^(?P<comment_id>[0-9]+)/goToPreviousComment/', views.goBackDisplayComment, name='gbdpc'), 
     url(r'^displayDataAnnotatedByUser/', views.displayDataAnnotatedByUser, name='displayDataAnnotatedByUser'),
+    url(r'^checkData/(?P<user_name>[0-9a-zA-Z]+)/', views.checkWhatPeopleMarked, name='checkWhatPeopleMarked'),
     
 ]
 
