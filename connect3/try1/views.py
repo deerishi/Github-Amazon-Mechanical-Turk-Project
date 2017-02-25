@@ -244,7 +244,7 @@ def displayDataAnnotatedByUser(request):
         if obj.cautious==1:
             string1+="cautious , "
         if obj.agressive==1:
-            string1+="Agressive , "
+            string1+="Aggressive , "
         if obj.defensive==1:
             string1+="Defensive , "
         if obj.happy==1:
