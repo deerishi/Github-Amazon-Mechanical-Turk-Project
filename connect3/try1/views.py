@@ -376,3 +376,28 @@ def displayFeedback(request):
         return render(request, 'try1/displayFeedback.html', {'data': data})
     else:
         return  HttpResponseNotFound('<h1>No Page Here</h1>')  
+
+
+@login_required
+def displayCommentComparison(request):
+    if request.user.is_superuser:
+        user1=User.objects.get(username='A3MPHGI584PR1U')
+        user2=User.objects.get(username='gogogo')
+        user3=User.objects.get(username='Cheburashechka')
+        #user1=User.objects.get(username='user1')
+        #user2=User.objects.get(username='try1')
+        #user3=User.objects.get(username='c5cho')
+        data1=DisplayAll3Results.objects.all()
+        if len(data1)<totalToMark:
+            DisplayAll3Results.objects.all().delete()
+            for i in range(2,53):
+                origComment=Sentiment1.objects.get(id=i).body
+                marked1=DisplayTableOfMarkedComments.objects.get(CommentId=i-2,Person=user1).Marked
+                marked2=DisplayTableOfMarkedComments.objects.get(CommentId=i-2,Person=user2).Marked
+                marked3=DisplayTableOfMarkedComments.objects.get(CommentId=i-2,Person=user3).Marked
+                DisplayAll3Results.objects.create(OriginalComment=origComment,marked1=marked1,marked2=marked2,marked3=marked3)
+
+        data=DisplayAll3Results.objects.all()
+        return render(request, 'try1/displayAll3Comments.html', {'data': data})        
+    else:
+        return  HttpResponseNotFound('<h1>No Page Here</h1>')

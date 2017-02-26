@@ -68,8 +68,14 @@ class DisplayTableOfMarkedComments(models.Model):
     Comment=models.TextField()
     Marked=models.TextField()
     CommentId=models.IntegerField(default=0)
-    
 
+class DisplayAll3Results(models.Model):
+    OriginalComment=models.TextField()
+    marked1=models.TextField()
+    marked2=models.TextField()
+    marked3=models.TextField()
+    
+    
 class HITTable(models.Model):
     person=models.ForeignKey(User)
     hitCode=models.BigIntegerField()
