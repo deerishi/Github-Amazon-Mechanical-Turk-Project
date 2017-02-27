@@ -13,6 +13,8 @@ from try1.forms import *
 from django.db.models import Max
 from django.contrib.auth import authenticate, login
 from random import randint
+import string
+import random
 totalToMark=50
 ipaList=['Shows Solidarity (help, compliment, gratify)',' Shows tension release	(josh, laugh with, cheer)','Agrees (agree with, understand,accommodate )',' Gives Suggestion (encourage, cue, coach)',' Gives opinion (evaluate, analyze, entreat)','Gives orientation (inform, educate, explain)','Asks for orientation (quiz, question, ask about)','Asks for opinon (consult, prompt, query)','Asks for suggestion (entreat, ask, beseech)','Disagrees (disagree with, ignore, hinder)','Shows Tension (fear, cajole, evade)','Shows Antagonism (argue with, deride, defy)']
 emotions=['Thanks','Sorry','Calm','Nervous','Careless','Cautious','Aggressive','Defensive','Happy','Angry'] 
@@ -42,7 +44,7 @@ class UserProfileList(APIView):
 @login_required
 def main(request):
     user=request.user
-    print('The user is ', user.email)
+    print('The user is ', user.username)
     
     return HttpResponse('hello world')
 
@@ -53,7 +55,7 @@ def goBackDisplayComment(request, comment_id):
     comment=get_object_or_404(Sentiment1, id=comment_id)
     pv=max(comment_id-1, 2)
     numMarked=len(AnnotatedSentences.objects.filter(owner=user))
-    return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':pv, 'numMarked':numMarked})
+    return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.username, 'prevComment':pv, 'numMarked':numMarked})
 
     
 
@@ -65,10 +67,10 @@ def displayComment(request, comment_id):
     if up.sentenceToMark<int(comment_id) and numMarked<totalToMark:
         comment=get_object_or_404(Sentiment1, id=up.sentenceToMark)
         pv=max(2, up.sentenceToMark-1)
-        return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':pv, 'numMarked':numMarked, 'error_message':'Please mark the sentences in the sequence. Kindly do not skip sentences'})
+        return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.username, 'prevComment':pv, 'numMarked':numMarked, 'error_message':'Please mark the sentences in the sequence. Kindly do not skip sentences'})
     if int(comment_id)<2:
         comment=get_object_or_404(Sentiment1, id=2)
-        return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':2, 'numMarked':numMarked})
+        return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.username, 'prevComment':2, 'numMarked':numMarked})
     
     if int(comment_id)>52:
         if up.hasGivenFeedback==True:
@@ -84,7 +86,7 @@ def displayComment(request, comment_id):
     #body=comment.body
     #print('Comment is ', body)
     prevComment=int(comment_id)-1
-    return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':prevComment, 'numMarked':numMarked})
+    return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.username, 'prevComment':prevComment, 'numMarked':numMarked})
 
 @login_required 
 def dummy(request):
@@ -98,7 +100,7 @@ def displayErrorForCheckboxes(request, comment_id):
     prevComment=max(2, int(comment_id)-1)
     comment=get_object_or_404(Sentiment1, id=comment_id)
     numMarked=len(AnnotatedSentences.objects.filter(owner=user))
-    return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':prevComment, 'numMarked':numMarked, 'error_message':'Please select at least 1 checkbox and max 3 for each category'})
+    return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.username, 'prevComment':prevComment, 'numMarked':numMarked, 'error_message':'Please select at least 1 checkbox and max 3 for each category'})
 
     
 @login_required
@@ -139,6 +141,10 @@ def processMarkedSentence(request, comment_id):
         return HttpResponseRedirect(reverse('try1:dpc', args=(comment_id,)))
         
 
+def id_generator(size=20, chars=string.ascii_uppercase + string.digits):
+    f= ''.join(random.choice(chars) for _ in range(size))
+    l=''.join(random.choice(chars) for _ in range(size))
+    return f+'@'+l+'.com'
 
 def register(request):
     if request.user.is_authenticated():
@@ -151,11 +157,13 @@ def register(request):
             print('The form is valid' )
             username=form.cleaned_data['username']
             print('The username is ',username)
-            email=form.cleaned_data['email']
-            first_name=form.cleaned_data['first_name']
-            last_name=form.cleaned_data['last_name']
+            
+            #email=form.cleaned_data['email']
+            email=id_generator()
+            #first_name=form.cleaned_data['first_name']
+            #last_name=form.cleaned_data['last_name']
             password1=form.cleaned_data['password1']
-            u=User.objects.create_user(username=username,email=email,  first_name=first_name, last_name=last_name, password=password1)
+            u=User.objects.create_user(username=username,email=email, password=password1)
             UserProfile.objects.create(email=u, sentenceToMark=2)
             messages.info(request, "Thanks for registering. You are now logged in.")
             new_user = authenticate(username=username, email=email,password=password1)
@@ -182,7 +190,7 @@ def notSubmittedError(request, comment_id):
     numMarked=len(AnnotatedSentences.objects.filter(owner=user))
     comment=get_object_or_404(Sentiment1, id=comment_id)
     request.session['previousComment']=comment.id
-    return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.email, 'prevComment':prevComment, 'numMarked':numMarked, 'error_message':'You have not submitted the labels for this comment previously. Please annotate each comment at least once to use the Next button without submitting. '})
+    return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.username, 'prevComment':prevComment, 'numMarked':numMarked, 'error_message':'You have not submitted the labels for this comment previously. Please annotate each comment at least once to use the Next button without submitting. '})
 
 @login_required
 def nextCommentWithoutSubmitting(request, comment_id):
