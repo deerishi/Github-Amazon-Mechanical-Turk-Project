@@ -15,6 +15,7 @@ from django.contrib.auth import authenticate, login
 from random import randint
 import string
 import random
+from pickletools import dis
 totalToMark=50
 ipaList=['Shows Solidarity (help, compliment, gratify)',' Shows tension release	(josh, laugh with, cheer)','Agrees (agree with, understand,accommodate )',' Gives Suggestion (encourage, cue, coach)',' Gives opinion (evaluate, analyze, entreat)','Gives orientation (inform, educate, explain)','Asks for orientation (quiz, question, ask about)','Asks for opinon (consult, prompt, query)','Asks for suggestion (entreat, ask, beseech)','Disagrees (disagree with, ignore, hinder)','Shows Tension (fear, cajole, evade)','Shows Antagonism (argue with, deride, defy)']
 emotions=['Thanks','Sorry','Calm','Nervous','Careless','Cautious','Aggressive','Defensive','Happy','Angry'] 
@@ -409,3 +410,52 @@ def displayCommentComparison(request):
         return render(request, 'try1/displayAll3Comments.html', {'data': data})        
     else:
         return  HttpResponseNotFound('<h1>No Page Here</h1>')
+    
+@login_required
+def getAgreementBetweenUsers(request):
+    if request.user.is_superuser:
+        userslist=['A3MPHGI584PR1U','gogogo','Cheburashechka']
+        #userslist=['deerishi','c5cho','try1']
+        shows_solidarity =shows_tension_release =agrees =gives_suggestion =gives_opinion =gives_orientation =asks_for_orientation =asks_for_opinon =asks_for_suggestion =disagrees =shows_tension =shows_antagnism=0
+        thanks =sorry =calm =nervous =careless =cautious =agressive =defensive =happy =angry =0
+        agreementOnIPA=0
+        agreementOnEmotions=0
+        for id in range(2,53):
+            ipas=[0 for i in range(12)]
+            emotions=[0 for i in range(10)]
+            for username in userslist:
+                user=User.objects.get(username=username)
+                comment=AnnotatedSentences.objects.get(comment_id=id,owner=user)
+                ipas[0]+=int(comment.shows_solidarity)
+                ipas[1]+=int(comment.shows_tension_release)
+                ipas[2]+=int(comment.agrees)
+                ipas[3]+=int(comment.gives_suggestion)
+                ipas[4]+=int(comment.gives_opinion)
+                ipas[5]+=int(comment.gives_orientation)
+                ipas[6]+=int(comment.asks_for_orientation)
+                ipas[7]+=int(comment.asks_for_opinon)
+                ipas[8]+=int(comment.asks_for_suggestion)
+                ipas[9]+=int(comment.disagrees)
+                ipas[10]+=int(comment.shows_tension)
+                ipas[11]+=int(comment.shows_antagnism)
+                
+                emotions[0]+=int(comment.thanks)
+                emotions[1]+=int(comment.sorry)
+                emotions[2]+=int(comment.calm)
+                emotions[3]+=int(comment.nervous)
+                emotions[4]+=int(comment.careless)
+                emotions[5]+=int(comment.cautious)
+                emotions[6]+=int(comment.agressive)
+                emotions[7]+=int(comment.defensive)
+                emotions[8]+=int(comment.happy)
+                emotions[9]+=int(comment.angry)
+            if max(ipas)>1:
+                agreementOnIPA+=1
+            if max(emotions)>1:
+                agreementOnEmotions+=1
+        return HttpResponse('Agreement on IPA is '+str(agreementOnIPA)+' and agreement on emotions is '+str(agreementOnEmotions))
+            
+    else:
+        return  HttpResponseNotFound('<h1>No Page Here</h1>')          
+                
+                

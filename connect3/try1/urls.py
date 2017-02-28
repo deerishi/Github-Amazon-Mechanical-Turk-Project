@@ -30,7 +30,8 @@ urlpatterns = [
     url(r'^renderFinishPage/', views.renderFinishPage, name='renderFinishPage'), 
     url(r'^displayFeedback/', views.displayFeedback, name='displayFeedback'),
     url(r'^processFeedBack/', views.processFeedBack, name='processFeedBack'), 
-    url(r'^displayAll3Results/', views.displayCommentComparison, name='displayCommentComparison'), 
+    url(r'^displayAll3Results/', views.displayCommentComparison, name='displayCommentComparison'),
+    url(r'^getAgreement/', views.getAgreementBetweenUsers, name='getAgreementBetweenUsers'), 
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
