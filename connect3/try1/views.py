@@ -454,7 +454,11 @@ def getAgreementBetweenUsers(request):
                 agreementOnIPA+=1
             if max(emotions)>1:
                 agreementOnEmotions+=1
-        return HttpResponse('Agreement on IPA is '+str(agreementOnIPA)+' and agreement on emotions is '+str(agreementOnEmotions))
+        
+        su=''
+        for u in userslist:
+            su=u+' , '
+        return HttpResponse('Between '+su+' Agreement on IPA is '+str(agreementOnIPA)+' and agreement on emotions is '+str(agreementOnEmotions))
             
     else:
         return  HttpResponseNotFound('<h1>No Page Here</h1>')          
