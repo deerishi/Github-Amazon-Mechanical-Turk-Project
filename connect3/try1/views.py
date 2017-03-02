@@ -415,6 +415,7 @@ def displayCommentComparison(request):
 @login_required
 def getAgreementBetweenUsers(request):
     if request.user.is_superuser:
+        print 'inGetAgreement'
         #userslist=['A3MPHGI584PR1U','gogogo','Cheburashechka','deepakRocks']
         userslist=['clovas','deepakRocks']
         #userslist=['deerishi','c5cho','try1']
