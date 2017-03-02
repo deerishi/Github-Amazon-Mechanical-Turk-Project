@@ -430,7 +430,7 @@ def getAgreementBetweenUsers(request):
                 user=User.objects.get(username=username)
                 print('id is ',id,' user is ',user)
                 try:
-                comment=AnnotatedSentences.objects.get(comment_id=id,owner=user)
+                    comment=AnnotatedSentences.objects.get(comment_id=id,owner=user)
                 except:
                     pass
                 ipas[0]+=int(comment.shows_solidarity)
