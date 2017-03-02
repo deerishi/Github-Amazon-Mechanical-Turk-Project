@@ -428,6 +428,7 @@ def getAgreementBetweenUsers(request):
             emotions=[0 for i in range(10)]
             for username in userslist:
                 user=User.objects.get(username=username)
+                print('id is ',id,' user is ',user)
                 comment=AnnotatedSentences.objects.get(comment_id=id,owner=user)
                 ipas[0]+=int(comment.shows_solidarity)
                 ipas[1]+=int(comment.shows_tension_release)
