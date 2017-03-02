@@ -416,7 +416,7 @@ def displayCommentComparison(request):
 def getAgreementBetweenUsers(request):
     if request.user.is_superuser:
         #userslist=['A3MPHGI584PR1U','gogogo','Cheburashechka','deepakRocks']
-        userslist=['A2UO3QJZNC2VOE','deepakRocks']
+        userslist=['subrajyog','deepakRocks']
         #userslist=['deerishi','c5cho','try1']
         shows_solidarity =shows_tension_release =agrees =gives_suggestion =gives_opinion =gives_orientation =asks_for_orientation =asks_for_opinon =asks_for_suggestion =disagrees =shows_tension =shows_antagnism=0
         thanks =sorry =calm =nervous =careless =cautious =agressive =defensive =happy =angry =0
