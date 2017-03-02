@@ -429,7 +429,10 @@ def getAgreementBetweenUsers(request):
             for username in userslist:
                 user=User.objects.get(username=username)
                 print('id is ',id,' user is ',user)
+                try:
                 comment=AnnotatedSentences.objects.get(comment_id=id,owner=user)
+                except:
+                    pass
                 ipas[0]+=int(comment.shows_solidarity)
                 ipas[1]+=int(comment.shows_tension_release)
                 ipas[2]+=int(comment.agrees)
