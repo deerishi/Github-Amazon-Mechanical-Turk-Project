@@ -1,11 +1,8 @@
 <center>
 
-<p><strong> Please answer the following questions in order to get the HIT code </strong></p>
+<p><strong> Please take a moment or two to answer the following question. Should you not wish to answer, please proceed to get the HIT code </strong></p>
 <ul>
 	<li> How was your experience ? Did you experience any crashes ?</li>
-	<li> Did you have any programming experience ?</li>
-	<li> Prior to this task did you know about Github.com ?</li>
-	<li> Would you like to work on more such hits in  the future? If yes, contact me at the address on the mechanical turk requester webpage</li>
 </ul>
 <form action="{% url 'try1:processFeedBack'  %}" method="post">
 	{% csrf_token %}
