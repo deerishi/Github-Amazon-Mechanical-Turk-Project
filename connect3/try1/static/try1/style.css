@@ -5,9 +5,14 @@
 }
 
 #withdraw{
-	float: auto;
+	float: center;
 	font-size: 30px;
 	text-decoration: none;
+}
+
+#withdraw:hover{
+	text-decoration: underline;
+	color: blue;
 }
 #logout:hover{
 	text-decoration: underline;
