@@ -332,8 +332,8 @@ def checkWhatPeopleMarked(request, user_name):
 def renderFeedBackForm(request):
     user=request.user
     up=UserProfile.objects.get(email=user)
-    if up.sentenceToMark- 2 < totalToMark:
-        return HttpResponseRedirect(reverse('try1:dpc', args=(up.sentenceToMark,)))
+    #if up.sentenceToMark- 2 < totalToMark:
+        #return HttpResponseRedirect(reverse('try1:dpc', args=(up.sentenceToMark,)))
     form=FeedBackForm()
     return render(request, 'try1/renderFeedBackForm.html', {'form':form})
 

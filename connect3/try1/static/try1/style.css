@@ -3,6 +3,12 @@
 	font-size: 30px;
 	text-decoration: none;
 }
+
+#withdraw{
+	float: right;
+	font-size: 30px;
+	text-decoration: none;
+}
 #logout:hover{
 	text-decoration: underline;
 	color: blue;
