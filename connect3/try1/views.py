@@ -16,7 +16,7 @@ from random import randint
 import string
 import random
 from pickletools import dis
-totalToMark=3000
+totalToMark=3003
 ipaList=['Shows Solidarity (help, compliment, gratify)',' Shows tension release	(josh, laugh with, cheer)','Agrees (agree with, understand,accommodate )',' Gives Suggestion (encourage, cue, coach)',' Gives opinion (evaluate, analyze, entreat)','Gives orientation (inform, educate, explain)','Asks for orientation (quiz, question, ask about)','Asks for opinon (consult, prompt, query)','Asks for suggestion (entreat, ask, beseech)','Disagrees (disagree with, ignore, hinder)','Shows Tension (fear, cajole, evade)','Shows Antagonism (argue with, deride, defy)']
 emotions=['Thanks','Sorry','Calm','Nervous','Careless','Cautious','Aggressive','Defensive','Happy','Angry'] 
 class Sentiment1List(APIView):
@@ -73,7 +73,7 @@ def displayComment(request, comment_id):
         comment=get_object_or_404(Sentiment1, id=2)
         return render(request, 'try1/detail.html', {'comment_id':comment.id-2,'comment':comment, 'ipaList':ipaList, 'emotions':emotions, 'user':user.username, 'prevComment':2, 'numMarked':numMarked})
     
-    if int(comment_id)>52:
+    if int(comment_id)>totalToMark:
         if up.hasGivenFeedback==True:
             return HttpResponseRedirect(reverse('try1:renderFinishPage'))
         else:
