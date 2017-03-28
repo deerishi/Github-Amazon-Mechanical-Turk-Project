@@ -16,7 +16,7 @@ from random import randint
 import string
 import random
 from pickletools import dis
-totalToMark=50
+totalToMark=3000
 ipaList=['Shows Solidarity (help, compliment, gratify)',' Shows tension release	(josh, laugh with, cheer)','Agrees (agree with, understand,accommodate )',' Gives Suggestion (encourage, cue, coach)',' Gives opinion (evaluate, analyze, entreat)','Gives orientation (inform, educate, explain)','Asks for orientation (quiz, question, ask about)','Asks for opinon (consult, prompt, query)','Asks for suggestion (entreat, ask, beseech)','Disagrees (disagree with, ignore, hinder)','Shows Tension (fear, cajole, evade)','Shows Antagonism (argue with, deride, defy)']
 emotions=['Thanks','Sorry','Calm','Nervous','Careless','Cautious','Aggressive','Defensive','Happy','Angry'] 
 class Sentiment1List(APIView):
